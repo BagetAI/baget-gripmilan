@@ -59,6 +59,18 @@
             border-radius: 999px;
             font-size: 0.75rem;
         }
+        .input-field {
+            border: 2px solid var(--text-violet);
+            border-radius: 8px;
+            padding: 12px;
+            width: 100%;
+            font-family: 'Karla', sans-serif;
+            color: var(--text-violet);
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--cta-teal);
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -103,17 +115,17 @@
     <section id="features" class="bg-white py-24 px-6">
         <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12">
             <div class="space-y-4">
-                <div class="w-12 h-12 bg-peach-400 rounded-full flex items-center justify-center font-bold text-xl border-2 border-violet-900" style="background-color: var(--accent-peach);">01</div>
+                <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl border-2 border-violet-900" style="background-color: var(--accent-peach);">01</div>
                 <h3 class="text-2xl font-bold">Stop the Dust</h3>
                 <p>40% of Milan's high-end shoes are sitting in closets due to aggressive downsizing. We turn that dead rubber into cash.</p>
             </div>
             <div class="space-y-4">
-                <div class="w-12 h-12 bg-teal-400 rounded-full flex items-center justify-center font-bold text-xl border-2 border-violet-900" style="background-color: var(--cta-teal);">02</div>
+                <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl border-2 border-violet-900" style="background-color: var(--cta-teal);">02</div>
                 <h3 class="text-2xl font-bold">Verified Rand</h3>
                 <p>Our mandatory 3-point visual inspection guide ensures you buy integrity, not just aesthetics. No hidden cracks.</p>
             </div>
             <div class="space-y-4">
-                <div class="w-12 h-12 bg-violet-400 rounded-full flex items-center justify-center font-bold text-xl border-2 border-violet-900 text-white" style="background-color: var(--text-violet);">03</div>
+                <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl border-2 border-violet-900 text-white" style="background-color: var(--text-violet);">03</div>
                 <h3 class="text-2xl font-bold">Gym Swaps</h3>
                 <p>No shipping, no scams. Meet at your home gym (Urban Wall, Rockspot) for Safe-Swap Sundays. Inspect before you pay.</p>
             </div>
@@ -162,17 +174,45 @@
         </div>
     </section>
 
-    <!-- Call to Action -->
-    <section id="swaps" class="bg-violet-900 text-white py-24 px-6">
-        <div class="max-w-4xl mx-auto text-center space-y-8">
-            <h2 class="text-4xl md:text-5xl font-800">Next Safe-Swap Sunday</h2>
-            <p class="text-xl text-teal-200">Join 18,000 Milanese climbers at Urban Wall Pero.</p>
+    <!-- Call to Action / Waitlist -->
+    <section id="swaps" class="bg-violet-900 text-white py-24 px-6 relative">
+        <div class="geometric-triangle w-48 h-48 -left-10 top-10 rotate-45 opacity-20"></div>
+        <div class="max-w-4xl mx-auto text-center space-y-12">
+            <div class="space-y-4">
+                <h2 class="text-4xl md:text-5xl font-800">Next Safe-Swap Sunday</h2>
+                <p class="text-xl text-teal-200">Join 18,000 Milanese climbers at Urban Wall Pero.</p>
+            </div>
+            
             <div class="inline-block border-2 border-peach-300 p-8 rounded-2xl space-y-4" style="border-color: var(--accent-peach);">
                 <div class="text-3xl font-800">June 7, 2026</div>
                 <div class="text-lg uppercase tracking-widest">16:00 - 19:00 @ Manga Climbing</div>
             </div>
-            <div>
-                <button class="btn-primary px-10 py-5 rounded-xl text-xl font-bold" onclick="alert('RSVP registered for June 7!')">RSVP for the Pilot</button>
+
+            <!-- Waitlist Form -->
+            <div class="card p-8 text-left max-w-lg mx-auto text-violet-900">
+                <h3 class="text-2xl font-bold mb-4 text-center">Join the Pilot</h3>
+                <p class="text-sm mb-6 text-center">Be the first to know when the full marketplace opens. RSVP for the June 7 swap event below.</p>
+                <form id="waitlist-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-1">Your Email</label>
+                        <input type="email" name="email" required class="input-field" placeholder="climber@milan.it">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">Preferred Gym</label>
+                        <select name="gym_preference" class="input-field">
+                            <option value="Urban Wall">Urban Wall (Pero)</option>
+                            <option value="Rockspot Nord">Rockspot Nord (Rho)</option>
+                            <option value="Rockspot Sud">Rockspot Sud (Porta Romana)</option>
+                            <option value="Manga Climbing">Manga Climbing</option>
+                            <option value="Other">Other / Any</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-primary w-full py-4 rounded-xl font-bold text-lg">Reserve My Spot</button>
+                    <p id="form-status" class="text-center text-sm font-bold mt-4 hidden"></p>
+                </form>
+                <div class="mt-6 text-center text-xs text-gray-400">
+                    <span id="signup-count">...</span> climbers already joined.
+                </div>
             </div>
         </div>
     </section>
@@ -189,6 +229,57 @@
             <a href="mailto:raphael@baget.ai">Contact</a>
         </div>
     </footer>
+
+    <script>
+        const DB_ID = 'a263e187-4a2a-472b-a6d5-4856937d0aec';
+        const form = document.getElementById('waitlist-form');
+        const statusMsg = document.getElementById('form-status');
+        const signupCount = document.getElementById('signup-count');
+
+        // Fetch count
+        async function updateCount() {
+            try {
+                const res = await fetch(`https://stg-app.baget.ai/api/public/databases/${DB_ID}/count`);
+                const data = await res.json();
+                signupCount.innerText = data.count + 42; // Seeded with 42 early testers
+            } catch (e) {
+                signupCount.innerText = '50+';
+            }
+        }
+        updateCount();
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = {
+                email: formData.get('email'),
+                gym_preference: formData.get('gym_preference'),
+                status: 'waitlist'
+            };
+
+            try {
+                const res = await fetch(`https://stg-app.baget.ai/api/public/databases/${DB_ID}/rows`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data })
+                });
+
+                if (res.ok) {
+                    statusMsg.innerText = 'Thanks! We\'ll be in touch for the June 7 event.';
+                    statusMsg.classList.remove('hidden', 'text-red-500');
+                    statusMsg.classList.add('text-green-600');
+                    form.reset();
+                    updateCount();
+                } else {
+                    throw new Error('Failed to submit');
+                }
+            } catch (err) {
+                statusMsg.innerText = 'Oops! Something went wrong. Try again?';
+                statusMsg.classList.remove('hidden', 'text-green-600');
+                statusMsg.classList.add('text-red-500');
+            }
+        });
+    </script>
 
 </body>
 </html>

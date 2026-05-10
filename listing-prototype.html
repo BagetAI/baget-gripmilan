@@ -53,7 +53,7 @@
     <!-- Header / Progress -->
     <div class="fixed top-0 left-0 right-0 p-4 bg-[#121212] z-50">
         <div class="flex justify-between items-center mb-4">
-            <span class="text-sm font-mono text-gray-500 uppercase tracking-widest">GripMilan / Listing</span>
+            <a href="index.html" class="text-sm font-mono text-gray-500 uppercase tracking-widest hover:text-white">GripMilan / Listing</a>
             <button onclick="closeApp()" class="text-gray-400">Cancel</button>
         </div>
         <div class="progress-bar">
@@ -94,7 +94,7 @@
         
         <label class="text-xs font-mono text-gray-500 uppercase mb-2 block">Brand</label>
         <div class="input-group mb-4">
-            <select class="bg-transparent w-full outline-none">
+            <select id="manufacturer" class="bg-transparent w-full outline-none">
                 <option>La Sportiva</option>
                 <option>Scarpa</option>
                 <option>Tenaya</option>
@@ -104,15 +104,15 @@
 
         <label class="text-xs font-mono text-gray-500 uppercase mb-2 block">Model</label>
         <div class="input-group mb-4">
-            <input type="text" placeholder="e.g. Solution Comp" class="bg-transparent w-full outline-none">
+            <input type="text" id="shoe_model" placeholder="e.g. Solution Comp" class="bg-transparent w-full outline-none">
         </div>
 
         <label class="text-xs font-mono text-gray-500 uppercase mb-2 block">Size (EU)</label>
         <div class="grid grid-cols-4 gap-2 mb-8">
-            <button class="bg-gray-800 p-3 rounded-lg border border-gray-700">39</button>
-            <button class="bg-orange-500 p-3 rounded-lg border border-orange-400">40</button>
-            <button class="bg-gray-800 p-3 rounded-lg border border-gray-700">41</button>
-            <button class="bg-gray-800 p-3 rounded-lg border border-gray-700">42</button>
+            <button onclick="setSize(39, this)" class="size-btn bg-gray-800 p-3 rounded-lg border border-gray-700">39</button>
+            <button onclick="setSize(40, this)" class="size-btn bg-orange-500 p-3 rounded-lg border border-orange-400">40</button>
+            <button onclick="setSize(41, this)" class="size-btn bg-gray-800 p-3 rounded-lg border border-gray-700">41</button>
+            <button onclick="setSize(42, this)" class="size-btn bg-gray-800 p-3 rounded-lg border border-gray-700">42</button>
         </div>
 
         <div onclick="nextScreen(3)" class="btn-primary mt-auto">Continue</div>
@@ -185,39 +185,102 @@
             <p class="text-xs text-gray-500">This price reflects "Mint" condition with sizing error. 40% of sellers find buyers within 48 hours at this price.</p>
         </div>
 
-        <div class="input-group flex justify-between items-center mb-8">
+        <div class="input-group flex justify-between items-center mb-4">
             <span class="text-sm font-bold uppercase tracking-tighter">Your Price</span>
-            <input type="number" value="130" class="bg-transparent text-right text-xl font-bold text-orange-500 outline-none w-20">
+            <input type="number" id="price" value="130" class="bg-transparent text-right text-xl font-bold text-orange-500 outline-none w-20">
             <span class="font-bold">€</span>
         </div>
 
-        <div onclick="nextScreen(6)" class="btn-primary mt-auto">Publish Listing</div>
+        <div class="input-group mb-8">
+            <label class="text-xs font-mono text-gray-500 uppercase mb-2 block">Your Email</label>
+            <input type="email" id="email" placeholder="climber@milan.it" class="bg-transparent w-full outline-none">
+        </div>
+
+        <button onclick="submitListing()" id="submit-btn" class="btn-primary mt-auto">Publish Listing</button>
     </div>
 
     <!-- SCREEN 6: Success -->
     <div id="screen-6" class="screen pt-24 text-center">
         <div class="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">✓</div>
-        <h2 class="text-2xl font-bold mb-2">Listing Live!</h2>
-        <p class="text-gray-400 mb-8">Your La Sportiva Solutions (EU 40) are now visible to 18,000 Milanese climbers.</p>
+        <h2 class="text-2xl font-bold mb-2">Listing Submitted!</h2>
+        <p class="text-gray-400 mb-8">Your listing is being verified for "Verified Rand" status. We'll email you once it's live.</p>
 
         <div class="bg-orange-500/10 border border-orange-500/20 rounded-2xl p-6 mb-8 text-left">
             <h3 class="font-bold text-orange-500 mb-2">Boost your trust</h3>
-            <p class="text-sm text-gray-300 mb-4">RSVP for "Safe-Swap Sunday" at Urban Wall (Pero) to get the <span class="bg-orange-500 text-white px-1 rounded">Verified Rand</span> badge.</p>
-            <a href="https://urbanwall.it" class="inline-block text-sm font-bold underline">RSVP for June 7th</a>
+            <p class="text-sm text-gray-300 mb-4">RSVP for "Safe-Swap Sunday" at Urban Wall (Pero) to get the <span class="bg-orange-500 text-white px-1 rounded">Verified Rand</span> badge in person.</p>
+            <a href="index.html#swaps" class="inline-block text-sm font-bold underline">RSVP for June 7th</a>
         </div>
 
-        <button onclick="location.reload()" class="btn-primary w-full">Back to Home</button>
+        <a href="index.html" class="btn-primary w-full block">Back to Home</a>
     </div>
 
     <script>
+        const DB_ID = 'a263e187-4a2a-472b-a6d5-4856937d0aec';
+        let currentSize = 40;
+
+        function setSize(size, el) {
+            currentSize = size;
+            document.querySelectorAll('.size-btn').forEach(b => {
+                b.classList.remove('bg-orange-500', 'border-orange-400');
+                b.classList.add('bg-gray-800', 'border-gray-700');
+            });
+            el.classList.add('bg-orange-500', 'border-orange-400');
+            el.classList.remove('bg-gray-800', 'border-gray-700');
+        }
+
         function nextScreen(num) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-' + num).classList.add('active');
             document.getElementById('progress').style.width = (num * 16.6) + '%';
         }
+
+        async function submitListing() {
+            const btn = document.getElementById('submit-btn');
+            const email = document.getElementById('email').value;
+            const model = document.getElementById('shoe_model').value;
+            const manufacturer = document.getElementById('manufacturer').value;
+            const price = document.getElementById('price').value;
+
+            if (!email || !model) {
+                alert('Please provide email and model.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = 'Submitting...';
+
+            const data = {
+                email: email,
+                shoe_model: model,
+                manufacturer: manufacturer,
+                size: currentSize.toString(),
+                price: parseFloat(price),
+                status: 'pending_verification'
+            };
+
+            try {
+                const res = await fetch(`https://stg-app.baget.ai/api/public/databases/${DB_ID}/rows`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data })
+                });
+
+                if (res.ok) {
+                    nextScreen(6);
+                } else {
+                    throw new Error('Submit failed');
+                }
+            } catch (err) {
+                alert('Oops! Error submitting your listing. Please try again.');
+                btn.disabled = false;
+                btn.innerText = 'Publish Listing';
+            }
+        }
+
         function closeApp() {
-            alert('Listing cancelled.');
-            location.reload();
+            if(confirm('Cancel listing?')) {
+                location.href = 'index.html';
+            }
         }
     </script>
 </body>
