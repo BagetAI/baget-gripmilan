@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GripMilan | Urban Climbing Gear Swap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700;800&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-lavender: #F0EDFF;
+            --text-violet: #4C1D95;
+            --cta-teal: #14B8A6;
+            --accent-peach: #FBBF77;
+        }
+        body {
+            font-family: 'Karla', sans-serif;
+            background-color: var(--bg-lavender);
+            color: var(--text-violet);
+        }
+        h1, h2, h3 {
+            font-family: 'Sora', sans-serif;
+        }
+        .geometric-circle {
+            position: absolute;
+            background-color: var(--accent-peach);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+        .geometric-triangle {
+            position: absolute;
+            background-color: var(--cta-teal);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            z-index: -1;
+            opacity: 0.4;
+        }
+        .btn-primary {
+            background-color: var(--cta-teal);
+            color: white;
+            transition: all 0.2s ease;
+            box-shadow: 4px 4px 0px var(--text-violet);
+        }
+        .btn-primary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--text-violet);
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 8px 8px 0px var(--accent-peach);
+            border: 2px solid var(--text-violet);
+        }
+        .fmv-badge {
+            background-color: var(--text-violet);
+            color: white;
+            font-family: 'Sora', sans-serif;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="flex justify-between items-center p-6 max-w-7xl mx-auto">
+        <div class="text-2xl font-800 tracking-tighter">GripMilan</div>
+        <div class="hidden md:flex gap-8 font-bold">
+            <a href="#features" class="hover:underline">How it Works</a>
+            <a href="#fmv" class="hover:underline">Pricing Guide</a>
+            <a href="#swaps" class="hover:underline">Safe-Swaps</a>
+        </div>
+        <a href="listing-prototype.html" class="btn-primary px-6 py-2 rounded-lg font-bold">List Gear</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative px-6 pt-20 pb-32 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
+        <div class="geometric-circle w-64 h-64 -top-10 -left-10 animate-pulse"></div>
+        <div class="geometric-triangle w-32 h-32 bottom-20 right-10 rotate-12"></div>
+        
+        <div class="flex-1 space-y-8">
+            <h1 class="text-5xl md:text-7xl font-800 leading-tight">
+                Recoup your <span class="text-teal-600 italic">Sizing Errors.</span>
+            </h1>
+            <p class="text-xl max-w-lg leading-relaxed">
+                The trusted gym-side marketplace for Milan's performance climbers. Swap mint-condition gear safely at Urban Wall, Rockspot, and Manga Climbing.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="listing-prototype.html" class="btn-primary px-8 py-4 rounded-xl text-lg font-bold">Sell Your Shoes</a>
+                <a href="#fmv" class="bg-white border-2 border-violet-900 px-8 py-4 rounded-xl text-lg font-bold">Check Resale Value</a>
+            </div>
+        </div>
+        
+        <div class="flex-1 w-full">
+            <div class="card overflow-hidden">
+                <img src="images/a-stylish-overhead-editorial-flat-lay-o.png" alt="Performance Climbing Gear" class="w-full h-auto object-cover">
+            </div>
+        </div>
+    </header>
+
+    <!-- Problem/Solution -->
+    <section id="features" class="bg-white py-24 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12">
+            <div class="space-y-4">
+                <div class="w-12 h-12 bg-peach-400 rounded-full flex items-center justify-center font-bold text-xl border-2 border-violet-900" style="background-color: var(--accent-peach);">01</div>
+                <h3 class="text-2xl font-bold">Stop the Dust</h3>
+                <p>40% of Milan's high-end shoes are sitting in closets due to aggressive downsizing. We turn that dead rubber into cash.</p>
+            </div>
+            <div class="space-y-4">
+                <div class="w-12 h-12 bg-teal-400 rounded-full flex items-center justify-center font-bold text-xl border-2 border-violet-900" style="background-color: var(--cta-teal);">02</div>
+                <h3 class="text-2xl font-bold">Verified Rand</h3>
+                <p>Our mandatory 3-point visual inspection guide ensures you buy integrity, not just aesthetics. No hidden cracks.</p>
+            </div>
+            <div class="space-y-4">
+                <div class="w-12 h-12 bg-violet-400 rounded-full flex items-center justify-center font-bold text-xl border-2 border-violet-900 text-white" style="background-color: var(--text-violet);">03</div>
+                <h3 class="text-2xl font-bold">Gym Swaps</h3>
+                <p>No shipping, no scams. Meet at your home gym (Urban Wall, Rockspot) for Safe-Swap Sundays. Inspect before you pay.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FMV Guide Teaser -->
+    <section id="fmv" class="py-24 px-6 relative">
+        <div class="geometric-circle w-96 h-96 -right-20 top-20"></div>
+        <div class="max-w-4xl mx-auto text-center space-y-12">
+            <h2 class="text-4xl font-800">Fair Market Value Guide</h2>
+            <p class="text-lg">Real-time secondary market pricing for Milan (May 2026). Don't overpay, don't undersell.</p>
+            
+            <div class="grid gap-6">
+                <!-- Example Row from Database -->
+                <div class="card p-6 flex flex-col md:flex-row justify-between items-center gap-4 text-left">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="font-bold text-lg">La Sportiva Solution / Comp</span>
+                            <span class="fmv-badge">MINT</span>
+                        </div>
+                        <p class="text-sm text-gray-500">Retail: €175.00</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-3xl font-800 text-teal-600">€130.00</div>
+                        <p class="text-xs font-bold uppercase tracking-widest text-violet-900">Recommended Price</p>
+                    </div>
+                </div>
+
+                <div class="card p-6 flex flex-col md:flex-row justify-between items-center gap-4 text-left">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="font-bold text-lg">Scarpa Drago / Drago LV</span>
+                            <span class="fmv-badge">MINT</span>
+                        </div>
+                        <p class="text-sm text-gray-500">Retail: €180.00</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-3xl font-800 text-teal-600">€135.00</div>
+                        <p class="text-xs font-bold uppercase tracking-widest text-violet-900">Recommended Price</p>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="listing-prototype.html" class="inline-block font-bold underline text-lg">See full pricing database →</a>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section id="swaps" class="bg-violet-900 text-white py-24 px-6">
+        <div class="max-w-4xl mx-auto text-center space-y-8">
+            <h2 class="text-4xl md:text-5xl font-800">Next Safe-Swap Sunday</h2>
+            <p class="text-xl text-teal-200">Join 18,000 Milanese climbers at Urban Wall Pero.</p>
+            <div class="inline-block border-2 border-peach-300 p-8 rounded-2xl space-y-4" style="border-color: var(--accent-peach);">
+                <div class="text-3xl font-800">June 7, 2026</div>
+                <div class="text-lg uppercase tracking-widest">16:00 - 19:00 @ Manga Climbing</div>
+            </div>
+            <div>
+                <button class="btn-primary px-10 py-5 rounded-xl text-xl font-bold" onclick="alert('RSVP registered for June 7!')">RSVP for the Pilot</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="p-12 text-center text-sm space-y-4">
+        <p class="font-bold">GripMilan &copy; 2026</p>
+        <p class="text-gray-500 max-w-md mx-auto">
+            Strictly Category II PPE marketplace. Ropes, harnesses, and life-critical hardware are prohibited. Always inspect gear in person.
+        </p>
+        <div class="flex justify-center gap-6 font-bold underline">
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+            <a href="mailto:raphael@baget.ai">Contact</a>
+        </div>
+    </footer>
+
+</body>
+</html>
