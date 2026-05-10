@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Build Version: 2026-05-10-Launch-01 -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -330,7 +331,8 @@
             const container = document.getElementById('fmv-container');
             try {
                 const res = await fetch(`https://stg-app.baget.ai/api/public/databases/${MARKET_DB}/rows`);
-                const { rows } = await res.json();
+                const data = await res.json();
+                const rows = data.rows || [];
                 
                 container.innerHTML = rows.slice(0, 4).map(row => `
                     <div class="card p-5 flex justify-between items-center group">
