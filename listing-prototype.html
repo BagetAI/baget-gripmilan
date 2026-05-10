@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- GripMilan Listing MVP | Version 1.1.0 -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GripMilan | 30-Second Listing Interface</title>
+    <title>List Your Gear | GripMilan</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700;800&family=Karla:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700;800&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --brand-teal: #14B8A6;
@@ -18,6 +19,7 @@
             background-color: var(--brand-violet);
             color: white;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
         h1, h2, h3 { font-family: 'Sora', sans-serif; }
 
@@ -25,15 +27,15 @@
             display: none;
             min-height: 100vh;
             padding: 24px;
-            animation: fadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            animation: slideUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
         .screen.active {
             display: flex;
             flex-direction: column;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .btn-primary {
@@ -45,12 +47,14 @@
             text-align: center;
             border: 2px solid white;
             box-shadow: 4px 4px 0px white;
+            transition: all 0.1s;
         }
         .btn-primary:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px white; }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .option-card {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             padding: 20px;
             cursor: pointer;
@@ -64,16 +68,16 @@
         }
 
         .progress-container {
-            height: 6px;
+            height: 4px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
+            border-radius: 2px;
             width: 100%;
         }
         .progress-fill {
             height: 100%;
             background: var(--brand-teal);
-            border-radius: 3px;
-            transition: width 0.5s ease;
+            border-radius: 2px;
+            transition: width 0.4s ease;
         }
 
         .input-dark {
@@ -84,178 +88,241 @@
             width: 100%;
             color: white;
             outline: none;
+            font-size: 1rem;
         }
-        .input-dark:focus { border-color: var(--brand-teal); }
+        .input-dark:focus { border-color: var(--brand-teal); background: rgba(255, 255, 255, 0.1); }
+
+        .size-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            font-weight: 800;
+            transition: all 0.2s;
+        }
+        .size-btn.active {
+            background: var(--brand-teal);
+            border-color: white;
+            box-shadow: 0 0 15px rgba(20, 184, 166, 0.4);
+        }
+
+        .verified-badge {
+            background: var(--brand-teal);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 99px;
+            font-size: 0.6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Progress Bar -->
-    <div class="fixed top-0 left-0 right-0 p-6 z-50 bg-[#4C1D95]/90 backdrop-blur-sm">
+    <!-- Nav Overlay -->
+    <div class="fixed top-0 left-0 right-0 p-6 z-50 bg-[#4C1D95]/80 backdrop-blur-md">
         <div class="flex justify-between items-center mb-4">
-            <a href="index.html" class="text-xs font-bold uppercase tracking-widest text-teal-300">← Back to Home</a>
-            <div id="step-label" class="text-xs font-bold opacity-60">Step 1 of 6</div>
+            <a href="index.html" class="text-xs font-bold uppercase tracking-widest text-teal-300 flex items-center gap-2">
+                <span>←</span> Exit
+            </a>
+            <div id="step-label" class="text-[10px] font-800 uppercase tracking-widest opacity-60">Step 1 of 6</div>
         </div>
         <div class="progress-container">
-            <div id="progress" class="progress-fill" style="width: 16%"></div>
+            <div id="progress" class="progress-fill" style="width: 16.6%"></div>
         </div>
     </div>
 
-    <!-- SCREEN 1: Category Selection -->
+    <!-- SCREEN 1: Category -->
     <div id="screen-1" class="screen active pt-32">
-        <h1 class="text-3xl font-800 mb-2">Sell your gear.</h1>
-        <p class="opacity-70 mb-10">Choose your category to start listing. Category II PPE only.</p>
-        
-        <div class="space-y-4">
-            <div onclick="nextScreen(2)" class="option-card selected flex justify-between items-center">
-                <div>
-                    <h3 class="text-xl font-bold">Climbing Shoes</h3>
-                    <p class="text-xs opacity-70">Solutions, Dragos, Skwamas, etc.</p>
+        <div class="flex-1">
+            <h1 class="text-4xl font-800 mb-2 leading-tight">Start Your <br>Listing.</h1>
+            <p class="opacity-60 mb-10 text-lg">We only accept Category II PPE to ensure safety and trust.</p>
+            
+            <div class="space-y-4">
+                <div onclick="nextScreen(2)" class="option-card selected flex justify-between items-center">
+                    <div>
+                        <h3 class="text-xl font-bold">Climbing Shoes</h3>
+                        <p class="text-xs opacity-60">Performance, Beginner, or Rentals</p>
+                    </div>
+                    <div class="text-3xl">🧗‍♀️</div>
                 </div>
-                <div class="text-2xl">⚡</div>
-            </div>
-            <div class="option-card opacity-50 flex justify-between items-center cursor-not-allowed">
-                <div>
-                    <h3 class="text-xl font-bold">Bouldering Pads</h3>
-                    <p class="text-xs opacity-70">Coming Soon</p>
+                <div class="option-card opacity-40 flex justify-between items-center cursor-not-allowed">
+                    <div>
+                        <h3 class="text-xl font-bold">Bouldering Pads</h3>
+                        <p class="text-xs opacity-60">Crashpads only</p>
+                    </div>
+                    <div class="text-2xl">🔒</div>
                 </div>
-                <div class="text-2xl">🔒</div>
             </div>
         </div>
         
-        <div class="mt-auto p-6 bg-white/5 rounded-2xl border border-white/10 text-center">
-            <p class="text-xs italic opacity-60">Safety Notice: We do not accept Ropes, Harnesses, or life-critical hardware to minimize risk.</p>
+        <div class="mt-8 p-6 bg-white/5 rounded-2xl border border-white/10">
+            <p class="text-[10px] uppercase font-bold tracking-widest opacity-40 mb-2">Safety Framework</p>
+            <p class="text-xs opacity-60 italic">GripMilan strictly prohibits life-critical Category III gear (ropes, harnesses) to protect our community.</p>
         </div>
     </div>
 
     <!-- SCREEN 2: Details -->
     <div id="screen-2" class="screen pt-32">
-        <h2 class="text-2xl font-800 mb-8">Shoe Details</h2>
-        
-        <div class="space-y-6">
-            <div>
-                <label class="block text-xs font-bold uppercase tracking-widest mb-2 opacity-50">Manufacturer</label>
-                <select id="manufacturer" class="input-dark">
-                    <option>La Sportiva</option>
-                    <option>Scarpa</option>
-                    <option>Tenaya</option>
-                    <option>Unparallel</option>
-                    <option>Five Ten</option>
-                    <option>Black Diamond</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-xs font-bold uppercase tracking-widest mb-2 opacity-50">Model Name</label>
-                <input type="text" id="shoe_model" class="input-dark" placeholder="e.g. Solution Comp">
-            </div>
-            <div>
-                <label class="block text-xs font-bold uppercase tracking-widest mb-2 opacity-50">Size (EU)</label>
-                <div class="grid grid-cols-4 gap-3">
-                    <button onclick="setSize(39, this)" class="size-btn p-3 bg-white/10 border-2 border-white/20 rounded-xl font-bold">39</button>
-                    <button onclick="setSize(40, this)" class="size-btn p-3 bg-teal-500 border-2 border-white rounded-xl font-bold">40</button>
-                    <button onclick="setSize(41, this)" class="size-btn p-3 bg-white/10 border-2 border-white/20 rounded-xl font-bold">41</button>
-                    <button onclick="setSize(42, this)" class="size-btn p-3 bg-white/10 border-2 border-white/20 rounded-xl font-bold">42</button>
+        <div class="flex-1">
+            <h2 class="text-2xl font-800 mb-8">Shoe Identity</h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-800 uppercase tracking-widest mb-2 opacity-50">Manufacturer</label>
+                    <select id="manufacturer" class="input-dark">
+                        <option>La Sportiva</option>
+                        <option>Scarpa</option>
+                        <option>Tenaya</option>
+                        <option>Unparallel</option>
+                        <option>Five Ten</option>
+                        <option>Black Diamond</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-800 uppercase tracking-widest mb-2 opacity-50">Model Name</label>
+                    <input type="text" id="shoe_model" class="input-dark" placeholder="e.g. Solution Comp">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-800 uppercase tracking-widest mb-3 opacity-50">Size (EU)</label>
+                    <div class="grid grid-cols-4 gap-3" id="size-selector">
+                        <button onclick="setSize(38, this)" class="size-btn">38</button>
+                        <button onclick="setSize(39, this)" class="size-btn">39</button>
+                        <button onclick="setSize(40, this)" class="size-btn active">40</button>
+                        <button onclick="setSize(41, this)" class="size-btn">41</button>
+                        <button onclick="setSize(42, this)" class="size-btn">42</button>
+                        <button onclick="setSize(43, this)" class="size-btn">43</button>
+                        <button onclick="setSize(44, this)" class="size-btn">44</button>
+                        <button onclick="setSize(45, this)" class="size-btn">45</button>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <button onclick="nextScreen(3)" class="btn-primary mt-auto">Next: Damage Check</button>
+        <button onclick="nextScreen(3)" class="btn-primary mt-8">Continue to Damage Check</button>
     </div>
 
     <!-- SCREEN 3: Damage Guide -->
     <div id="screen-3" class="screen pt-32">
-        <h2 class="text-2xl font-800 mb-4 text-peach-300">The Rand Check.</h2>
-        <p class="opacity-70 mb-8">We need 3 specific photos to verify the integrity of your rubber.</p>
-        
-        <div class="bg-black/20 rounded-2xl overflow-hidden mb-8">
-            <img src="images/a-high-fidelity-mobile-app-interface-scr.png" class="w-full h-auto" alt="Guide">
-        </div>
-
-        <div class="space-y-4 text-sm font-bold">
-            <div class="flex gap-4 items-center p-3 bg-white/5 rounded-xl">
-                <span class="text-teal-400">01</span> Toe Box Edge
-            </div>
-            <div class="flex gap-4 items-center p-3 bg-white/5 rounded-xl">
-                <span class="text-teal-400">02</span> Rand Stitching
-            </div>
-            <div class="flex gap-4 items-center p-3 bg-white/5 rounded-xl">
-                <span class="text-teal-400">03</span> Heel Cup
-            </div>
-        </div>
-
-        <button onclick="nextScreen(4)" class="btn-primary mt-auto text-violet-900 bg-peach-300">I Understand</button>
-    </div>
-
-    <!-- SCREEN 4: Ghost Camera Simulation -->
-    <div id="screen-4" class="screen pt-32 bg-black overflow-hidden relative">
-        <div class="absolute inset-0 flex items-center justify-center opacity-40">
-            <svg width="240" height="240" viewBox="0 0 100 100">
-                <path d="M10,80 Q30,10 90,40" stroke="white" stroke-width="2" fill="none" stroke-dasharray="4 2" />
-                <circle cx="90" cy="40" r="4" fill="#14B8A6" />
-            </svg>
-        </div>
-        
-        <div class="mt-auto space-y-8 z-10 text-center">
-            <div class="text-sm font-bold uppercase tracking-widest text-teal-400">Align Toe Box to Silhouette</div>
-            <div class="flex justify-center items-center gap-10 pb-10">
-                <div class="w-12 h-12 rounded-full border border-white/20"></div>
-                <button onclick="nextScreen(5)" class="w-20 h-20 rounded-full border-4 border-white p-2">
-                    <div class="w-full h-full bg-white rounded-full"></div>
-                </button>
-                <div class="text-2xl">⚡</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- SCREEN 5: Pricing & Submit -->
-    <div id="screen-5" class="screen pt-32">
-        <h2 class="text-2xl font-800 mb-2">Smart Pricing</h2>
-        <p class="opacity-70 mb-8">Market-verified pricing based on your model.</p>
-        
-        <div class="bg-white/10 rounded-2xl p-6 mb-8 border border-white/10">
-            <div class="flex justify-between opacity-50 mb-2 text-xs font-bold uppercase">Retail MSRP</div>
-            <div class="text-lg font-bold mb-4">€175.00</div>
+        <div class="flex-1">
+            <h2 class="text-2xl font-800 mb-4 text-peach-300">The Rand Check.</h2>
+            <p class="opacity-70 mb-8">Buyers pay a premium for "Verified Rand" status. We need 3 clear macro-shots.</p>
             
-            <div class="flex justify-between items-center mb-2">
-                <span class="font-bold text-teal-400 uppercase text-xs">Suggested Resale</span>
-                <span class="text-3xl font-800">€130.00</span>
+            <div class="bg-black/40 rounded-3xl overflow-hidden border-2 border-white/10 mb-8 relative">
+                <img src="images/a-high-fidelity-mobile-app-interface-scr.png" class="w-full h-auto opacity-90" alt="Inspection Guide">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                    <p class="text-xs font-bold">Standardized photo guide ensures buyer trust.</p>
+                </div>
             </div>
-            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
-                <div class="h-full bg-teal-400" style="width: 74%"></div>
+
+            <div class="space-y-3">
+                <div class="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                    <div class="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center text-[10px] font-bold">1</div>
+                    <div class="text-sm font-bold">Toe Box Edge (Wear check)</div>
+                </div>
+                <div class="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                    <div class="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center text-[10px] font-bold">2</div>
+                    <div class="text-sm font-bold">Side Rand (Stitching integrity)</div>
+                </div>
+                <div class="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                    <div class="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center text-[10px] font-bold">3</div>
+                    <div class="text-sm font-bold">Heel Tension (Rubber stretch)</div>
+                </div>
             </div>
         </div>
 
-        <div class="space-y-4 mb-8">
-            <div>
-                <label class="block text-xs font-bold uppercase mb-2 opacity-50">Your Asking Price (€)</label>
-                <input type="number" id="price" value="130" class="input-dark text-2xl font-800 text-teal-400">
+        <button onclick="nextScreen(4)" class="btn-primary mt-8 text-violet-900 bg-peach-300 border-violet-900">Start Camera</button>
+    </div>
+
+    <!-- SCREEN 4: Ghost Camera -->
+    <div id="screen-4" class="screen pt-32 bg-black overflow-hidden relative p-0">
+        <!-- Silhouette Overlay -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div class="w-64 h-96 border-2 border-dashed border-teal-500/50 rounded-[40px] flex items-center justify-center">
+                <div class="text-[10px] font-800 uppercase tracking-widest text-teal-500/50">Place shoe here</div>
             </div>
-            <div>
-                <label class="block text-xs font-bold uppercase mb-2 opacity-50">Your Email</label>
-                <input type="email" id="email" class="input-dark" placeholder="climber@milan.it">
+        </div>
+        
+        <div class="mt-auto w-full bg-black/80 backdrop-blur-md p-10 space-y-8 text-center border-t border-white/10">
+            <div class="text-xs font-800 uppercase tracking-widest text-teal-400">Capture 1: Toe Box Edge</div>
+            <div class="flex justify-around items-center">
+                <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-xs opacity-50">Gallery</div>
+                <button onclick="nextScreen(5)" class="w-24 h-24 rounded-full border-4 border-white p-2 group active:scale-95 transition-transform">
+                    <div class="w-full h-full bg-white rounded-full group-hover:bg-teal-100 transition-colors"></div>
+                </button>
+                <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-xs opacity-50">Flip</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 5: Pricing -->
+    <div id="screen-5" class="screen pt-32">
+        <div class="flex-1">
+            <h2 class="text-2xl font-800 mb-2 leading-tight">Smart Pricing.</h2>
+            <p class="opacity-60 mb-8 text-sm">We suggest prices that actually sell in Milan.</p>
+            
+            <div class="card bg-white/10 p-6 mb-8 border border-white/20 shadow-none">
+                <div class="flex justify-between items-center opacity-40 mb-4">
+                    <span class="text-[10px] font-800 uppercase tracking-widest">Retail Benchmarks</span>
+                    <span class="text-sm font-bold">~€175.00</span>
+                </div>
+                
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <div class="text-[10px] font-800 uppercase tracking-widest text-teal-400 mb-1">Suggested Resale</div>
+                        <div class="text-4xl font-800 tracking-tighter">€130.00</div>
+                    </div>
+                    <div class="verified-badge">
+                        <span>✓</span> Verified Rand
+                    </div>
+                </div>
+                <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                    <div class="h-full bg-teal-400 w-3/4"></div>
+                </div>
+                <div class="mt-4 text-[10px] opacity-40 font-bold italic">High turnover expected within 48 hours at this price.</div>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-800 uppercase tracking-widest mb-2 opacity-50">Asking Price (€)</label>
+                    <input type="number" id="price" value="130" class="input-dark text-3xl font-800 text-teal-400 border-teal-500/30">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-800 uppercase tracking-widest mb-2 opacity-50">Your Email (Verification)</label>
+                    <input type="email" id="email" class="input-dark" placeholder="climber@milan.it">
+                </div>
             </div>
         </div>
 
-        <button onclick="submitListing()" id="submit-btn" class="btn-primary mt-auto">Publish Listing</button>
+        <button onclick="submitListing()" id="submit-btn" class="btn-primary mt-8">Publish Verification</button>
     </div>
 
     <!-- SCREEN 6: Success -->
     <div id="screen-6" class="screen pt-32 text-center">
-        <div class="w-24 h-24 bg-teal-500 rounded-3xl rotate-12 flex items-center justify-center mx-auto mb-10 border-4 border-white shadow-xl">
-            <span class="text-4xl">👟</span>
+        <div class="w-24 h-24 bg-teal-500 rounded-[32px] rotate-12 flex items-center justify-center mx-auto mb-10 border-4 border-white shadow-2xl">
+            <span class="text-5xl">✅</span>
         </div>
-        <h2 class="text-3xl font-800 mb-4">Listing Sent!</h2>
-        <p class="opacity-70 leading-relaxed mb-10">
-            Your gear is being verified for "Verified Rand" status. We'll alert the community as soon as it's live.
+        <h2 class="text-4xl font-800 mb-4">Awaiting Rand Scan.</h2>
+        <p class="opacity-60 leading-relaxed text-lg mb-10">
+            Our team is verifying your "Verified Rand" badge. You'll get an email once your listing hits the Milan feed.
         </p>
 
-        <div class="bg-peach-300 text-violet-900 p-6 rounded-2xl text-left border-4 border-white shadow-xl rotate-1 mb-10">
-            <h3 class="font-bold mb-1">Double your trust score?</h3>
-            <p class="text-sm opacity-80 mb-4">Come to Manga Climbing on June 7th for a physical inspection.</p>
-            <a href="index.html#waitlist" class="font-800 underline">RSVP for Pilot Event</a>
+        <div class="bg-peach-300 text-violet-900 p-8 rounded-3xl text-left border-4 border-white shadow-2xl -rotate-1 mb-12">
+            <div class="flex items-center gap-3 mb-3">
+                <span class="w-8 h-8 bg-violet-900 text-white rounded-full flex items-center justify-center text-sm font-bold">!</span>
+                <h3 class="font-800 text-lg">Next Safe-Swap: June 7</h3>
+            </div>
+            <p class="text-sm font-medium mb-6 opacity-80">Finalize your swap in person at Manga Climbing Precotto and skip the vetting process.</p>
+            <a href="index.html#waitlist" class="inline-block font-800 underline uppercase text-xs tracking-widest">RSVP for June 7th →</a>
         </div>
 
-        <a href="index.html" class="btn-primary w-full block">Finish</a>
+        <div class="mt-auto">
+            <a href="index.html" class="btn-primary w-full block">Return to Community</a>
+        </div>
     </div>
 
     <script>
@@ -264,12 +331,8 @@
 
         function setSize(size, el) {
             currentSize = size;
-            document.querySelectorAll('.size-btn').forEach(b => {
-                b.classList.remove('bg-teal-500', 'border-white');
-                b.classList.add('bg-white/10', 'border-white/20');
-            });
-            el.classList.add('bg-teal-500', 'border-white');
-            el.classList.remove('bg-white/10', 'border-white/20');
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
         }
 
         function nextScreen(num) {
@@ -277,7 +340,7 @@
             document.getElementById('screen-' + num).classList.add('active');
             document.getElementById('progress').style.width = (num * 16.6) + '%';
             document.getElementById('step-label').innerText = `Step ${num} of 6`;
-            window.scrollTo(0,0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         async function submitListing() {
@@ -288,12 +351,12 @@
             const price = document.getElementById('price').value;
 
             if (!email || !model) {
-                alert('Email and model are required.');
+                alert('Email and shoe model are mandatory for verification.');
                 return;
             }
 
             btn.disabled = true;
-            btn.innerText = 'Syncing...';
+            btn.innerText = 'Verifying Integrity...';
 
             try {
                 const res = await fetch(`https://stg-app.baget.ai/api/public/databases/${DB_ID}/rows`, {
@@ -306,7 +369,8 @@
                             manufacturer,
                             size: currentSize.toString(),
                             price: parseFloat(price),
-                            status: 'pending_pilot'
+                            status: 'listing_pending',
+                            source: 'mobile_listing_flow'
                         }
                     })
                 });
@@ -315,9 +379,9 @@
                     nextScreen(6);
                 } else { throw new Error(); }
             } catch (err) {
-                alert('Submission error. Check connection?');
+                alert('Could not sync listing. Please check your data connection at the gym.');
                 btn.disabled = false;
-                btn.innerText = 'Publish Listing';
+                btn.innerText = 'Publish Verification';
             }
         }
     </script>

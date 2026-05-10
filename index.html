@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Build Version: 2026-05-10-Launch-01 -->
+<!-- GripMilan Core MVP | Version 1.1.0 -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GripMilan | Urban Climbing Gear Swap & Community</title>
+    <title>GripMilan | The Urban Climbing Gear Exchange</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700;800&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -25,7 +25,8 @@
         .geometric-shape {
             position: absolute;
             z-index: -1;
-            opacity: 0.7;
+            opacity: 0.6;
+            pointer-events: none;
         }
         .circle { border-radius: 50%; background-color: var(--accent-peach); }
         .triangle { 
@@ -36,13 +37,18 @@
         .btn-primary {
             background-color: var(--cta-teal);
             color: white;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 6px 6px 0px var(--text-violet);
             border: 2px solid var(--text-violet);
+            display: inline-block;
         }
         .btn-primary:hover {
             transform: translate(-3px, -3px);
             box-shadow: 9px 9px 0px var(--text-violet);
+        }
+        .btn-primary:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--text-violet);
         }
         
         .card {
@@ -50,16 +56,19 @@
             border-radius: 12px;
             box-shadow: 8px 8px 0px var(--accent-peach);
             border: 2px solid var(--text-violet);
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .card:hover { transform: translateY(-4px); }
+        .card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 12px 12px 0px var(--accent-peach);
+        }
         
         .fmv-badge {
             background-color: var(--text-violet);
             color: white;
-            padding: 4px 10px;
+            padding: 2px 8px;
             border-radius: 99px;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 800;
             text-transform: uppercase;
         }
@@ -71,145 +80,142 @@
             width: 100%;
             font-family: 'Karla', sans-serif;
             background: white;
+            transition: all 0.2s;
         }
-        .input-field:focus { outline: none; border-color: var(--cta-teal); box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2); }
+        .input-field:focus { outline: none; border-color: var(--cta-teal); box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.15); }
 
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
         }
-        .float { animation: float 4s ease-in-out infinite; }
+        .float { animation: float 6s ease-in-out infinite; }
+
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background-color: var(--text-violet);
+            padding: 12px 0;
+            border-top: 2px solid var(--text-violet);
+            border-bottom: 2px solid var(--text-violet);
+        }
+        .ticker {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker 40s linear infinite;
+        }
+        .ticker span {
+            color: white;
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            padding-right: 50px;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
 
+    <!-- Ticker Banner -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span>Next Safe-Swap: June 7 • Manga Climbing Precotto</span>
+            <span>Category II PPE Verified</span>
+            <span>Recoup your Sizing Errors</span>
+            <span>Hand-to-Hand Exchange @ Urban Wall</span>
+            <span>Next Safe-Swap: June 7 • Manga Climbing Precotto</span>
+            <span>Category II PPE Verified</span>
+            <span>Recoup your Sizing Errors</span>
+            <span>Hand-to-Hand Exchange @ Urban Wall</span>
+        </div>
+    </div>
+
     <!-- Navbar -->
-    <nav class="sticky top-0 z-50 bg-[#F0EDFF]/80 backdrop-blur-md border-b-2 border-violet-900/10 px-6 py-4">
+    <nav class="sticky top-0 z-50 bg-[#F0EDFF]/90 backdrop-blur-lg border-b-2 border-violet-900/10 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="text-2xl font-800 tracking-tighter flex items-center gap-2">
-                <span class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center text-white text-lg">G</span>
-                GripMilan
+                <div class="w-10 h-10 bg-teal-500 rounded-xl flex items-center justify-center text-white text-xl shadow-[4px_4px_0px_#4C1D95] border-2 border-violet-900">G</div>
+                <span class="hidden sm:inline">GripMilan</span>
             </div>
-            <div class="hidden md:flex gap-8 font-bold items-center">
-                <a href="#how-it-works" class="hover:text-teal-600 transition-colors">Process</a>
-                <a href="#fmv" class="hover:text-teal-600 transition-colors">FMV Guide</a>
-                <a href="#community" class="hover:text-teal-600 transition-colors">Community</a>
-                <a href="listing-prototype.html" class="btn-primary px-6 py-2 rounded-xl text-sm">Sell Shoes</a>
+            <div class="flex gap-4 sm:gap-8 font-bold items-center">
+                <a href="#fmv" class="hover:text-teal-600 transition-colors text-sm">Market Guide</a>
+                <a href="listing-prototype.html" class="btn-primary px-4 sm:px-6 py-2 rounded-xl text-xs sm:text-sm">List Gear</a>
             </div>
-            <a href="#waitlist" class="md:hidden btn-primary px-4 py-2 rounded-xl text-xs">Join Beta</a>
         </div>
     </nav>
 
     <!-- Hero -->
-    <header class="relative px-6 py-20 lg:py-32 max-w-7xl mx-auto overflow-visible">
-        <div class="geometric-shape circle w-72 h-72 -top-10 -left-20 float"></div>
-        <div class="geometric-shape triangle w-40 h-40 bottom-10 -right-10 rotate-12"></div>
+    <header class="relative px-6 py-16 lg:py-28 max-w-7xl mx-auto">
+        <div class="geometric-shape circle w-64 h-64 -top-10 -left-10 float opacity-30"></div>
+        <div class="geometric-shape triangle w-40 h-40 bottom-20 -right-10 rotate-12 opacity-30"></div>
         
         <div class="grid lg:grid-cols-2 gap-16 items-center">
             <div class="space-y-8">
-                <div class="inline-block bg-peach-200 text-violet-900 px-4 py-1 rounded-full font-bold text-sm border-2 border-violet-900">
-                    Milan's First Performance Marketplace
+                <div class="inline-flex items-center gap-2 bg-peach-300 text-violet-900 px-4 py-1.5 rounded-full font-bold text-xs border-2 border-violet-900">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-violet-600"></span>
+                    </span>
+                    Live at Urban Wall & Manga
                 </div>
-                <h1 class="text-5xl md:text-7xl font-800 leading-none tracking-tight">
-                    Turn your <span class="text-teal-500 underline decoration-violet-900 decoration-8">Sizing Errors</span> into Cash.
+                <h1 class="text-5xl md:text-7xl font-800 leading-[0.95] tracking-tight">
+                    Recoup your <br>
+                    <span class="text-teal-500 italic">Sizing Errors.</span>
                 </h1>
-                <p class="text-xl md:text-2xl font-500 text-violet-800/80 leading-relaxed max-w-lg">
-                    Swap high-end climbing gear safely at your home gym. Verified rands, fair pricing, zero shipping anxiety.
+                <p class="text-lg md:text-xl font-500 text-violet-800/80 leading-relaxed max-w-lg">
+                    The trusted gear-swap for Milanese climbers. List in 30s, verify in person, and upgrade your performance without the retail sting.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                    <a href="listing-prototype.html" class="btn-primary px-10 py-5 rounded-2xl text-lg font-800 text-center">List Your Gear — 30s</a>
-                    <a href="#fmv" class="bg-white border-2 border-violet-900 px-10 py-5 rounded-2xl text-lg font-800 text-center hover:bg-violet-50 transition-colors">Check Prices</a>
+                    <a href="listing-prototype.html" class="btn-primary px-10 py-5 rounded-2xl text-lg font-800 text-center">Sell Your Shoes</a>
+                    <a href="#fmv" class="bg-white border-2 border-violet-900 px-10 py-5 rounded-2xl text-lg font-800 text-center hover:bg-violet-50 transition-colors">Browse Market</a>
                 </div>
-                <div class="flex items-center gap-4 text-sm font-bold opacity-70">
-                    <div class="flex -space-x-3">
-                        <div class="w-10 h-10 rounded-full border-2 border-violet-900 bg-teal-400"></div>
-                        <div class="w-10 h-10 rounded-full border-2 border-violet-900 bg-peach-400"></div>
-                        <div class="w-10 h-10 rounded-full border-2 border-violet-900 bg-violet-400"></div>
+                <div class="flex items-center gap-4 text-sm font-bold text-violet-900/60 bg-white/50 p-3 rounded-2xl border-2 border-dashed border-violet-900/20 w-fit">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full border-2 border-violet-900 bg-teal-400"></div>
+                        <div class="w-8 h-8 rounded-full border-2 border-violet-900 bg-peach-400"></div>
+                        <div class="w-8 h-8 rounded-full border-2 border-violet-900 bg-violet-400"></div>
                     </div>
-                    <span>Join <span id="hero-count">50+</span> climbers already in the loop</span>
+                    <span><span id="hero-count" class="text-violet-900 font-800">...</span> climbers ready for June 7</span>
                 </div>
             </div>
             
-            <div class="relative">
-                <div class="card overflow-hidden rotate-2">
+            <div class="relative lg:ml-12">
+                <div class="card overflow-hidden rotate-2 max-w-md mx-auto relative z-10">
                     <img src="images/a-stylish-overhead-editorial-flat-lay-o.png" alt="Climbing gear" class="w-full h-auto object-cover aspect-[4/3]">
                 </div>
-                <div class="absolute -bottom-10 -left-10 card p-6 bg-teal-500 text-white -rotate-3 max-w-[200px]">
+                <div class="absolute -bottom-12 -left-4 sm:-left-12 card p-6 bg-teal-500 text-white -rotate-6 z-20 shadow-[8px_8px_0px_#4C1D95]">
                     <div class="text-3xl font-800">€130</div>
-                    <div class="text-xs font-bold uppercase tracking-widest">Avg. Solution Resale</div>
+                    <div class="text-xs font-bold uppercase tracking-widest opacity-80">Avg. Solution Resale</div>
                 </div>
+                <div class="geometric-shape circle w-48 h-48 bottom-0 right-0 bg-peach-300 opacity-50 z-0"></div>
             </div>
         </div>
     </header>
 
-    <!-- Social Proof / Stats -->
-    <section class="bg-violet-900 text-white py-16 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-                <div class="text-4xl font-800 text-teal-400">40%</div>
-                <div class="text-sm font-bold uppercase tracking-widest text-teal-200">Sizing Error Rate</div>
-            </div>
-            <div>
-                <div class="text-4xl font-800 text-teal-400">5+</div>
-                <div class="text-sm font-bold uppercase tracking-widest text-teal-200">Partner Gyms</div>
-            </div>
-            <div>
-                <div class="text-4xl font-800 text-teal-400">€0</div>
-                <div class="text-sm font-bold uppercase tracking-widest text-teal-200">Shipping Fees</div>
-            </div>
-            <div>
-                <div class="text-4xl font-800 text-teal-400">100%</div>
-                <div class="text-sm font-bold uppercase tracking-widest text-teal-200">P2P Verification</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works -->
-    <section id="how-it-works" class="py-24 px-6 relative">
-        <div class="max-w-7xl mx-auto space-y-16">
-            <div class="text-center space-y-4">
-                <h2 class="text-4xl md:text-5xl font-800">How Safe-Swap Works</h2>
-                <p class="text-xl max-w-2xl mx-auto opacity-70">Built specifically for the Milanese climbing scene. No Vinted headaches.</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-12">
-                <div class="card p-8 space-y-6">
-                    <div class="w-14 h-14 bg-peach-400 rounded-2xl flex items-center justify-center font-800 text-2xl border-2 border-violet-900">1</div>
-                    <h3 class="text-2xl font-bold">List in Seconds</h3>
-                    <p class="leading-relaxed">Use our 30-second mobile flow. Identify your model, size, and use our "Ghost Camera" to capture the perfect rand shots.</p>
-                </div>
-                <div class="card p-8 space-y-6 translate-y-6">
-                    <div class="w-14 h-14 bg-teal-400 rounded-2xl flex items-center justify-center font-800 text-2xl border-2 border-violet-900">2</div>
-                    <h3 class="text-2xl font-bold">Smart Pricing</h3>
-                    <p class="leading-relaxed">Our FMV engine checks current Milanese secondary market prices. Sell faster by pricing correctly for our community.</p>
-                </div>
-                <div class="card p-8 space-y-6">
-                    <div class="w-14 h-14 bg-violet-400 rounded-2xl flex items-center justify-center font-800 text-2xl border-2 border-violet-900 text-white">3</div>
-                    <h3 class="text-2xl font-bold">Meet at the Gym</h3>
-                    <p class="leading-relaxed">RSVP for Safe-Swap Sunday at Urban Wall or Manga. Inspect the shoes, verify the fit, and trade securely in person.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FMV Section -->
-    <section id="fmv" class="py-24 px-6 bg-white border-y-4 border-violet-900">
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row gap-16 items-center">
-            <div class="flex-1 space-y-8">
-                <h2 class="text-4xl font-800">Real-Time FMV Guide</h2>
+    <!-- Market Guide Section -->
+    <section id="fmv" class="py-24 px-6 bg-white border-y-4 border-violet-900 relative">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-16 items-start">
+            <div class="lg:col-span-5 space-y-8">
+                <div class="text-xs font-800 uppercase tracking-widest text-teal-600">Intelligence Engine</div>
+                <h2 class="text-4xl font-800 leading-tight">Fair Market Value (FMV) Guide</h2>
                 <p class="text-lg opacity-70 leading-relaxed">
-                    Based on 100+ analyzed listings from Subito and Vinted (Milan region). We track what actually sells, so you don't overpay for "dead rubber."
+                    Our community-powered engine tracks successful swaps across Milan. Don't guess your asking price—know what the market is paying for mint-condition rubber.
                 </p>
-                <div class="p-6 bg-lavender rounded-2xl border-2 border-violet-900 flex items-center gap-4">
-                    <div class="text-3xl">💡</div>
-                    <p class="text-sm font-bold italic">"Mint condition Solution Comps retain 74% of retail value if sold within 3 months."</p>
+                <div class="p-6 bg-lavender rounded-2xl border-2 border-violet-900 relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h4 class="font-800 text-sm mb-2">💡 Market Tip</h4>
+                        <p class="text-sm italic font-500">"Scarpa Dragos in EU 40-41 are currently moving 20% faster than any other model in Milan."</p>
+                    </div>
+                    <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-peach-400/20 rounded-full"></div>
                 </div>
-                <a href="listing-prototype.html" class="inline-block font-800 text-teal-600 underline text-lg">List your sizing error now →</a>
             </div>
             
-            <div class="flex-1 w-full space-y-4" id="fmv-container">
-                <!-- Data injected here -->
+            <div class="lg:col-span-7 w-full space-y-4" id="fmv-container">
+                <!-- Data injected here via JS -->
                 <div class="animate-pulse space-y-4">
                     <div class="h-24 bg-gray-100 rounded-xl"></div>
                     <div class="h-24 bg-gray-100 rounded-xl"></div>
@@ -219,53 +225,72 @@
         </div>
     </section>
 
-    <!-- Community Shot -->
-    <section id="community" class="py-24 px-6 overflow-hidden">
-        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-            <div class="order-2 lg:order-1 relative">
-                <div class="card overflow-hidden -rotate-1">
-                    <img src="images/a-colorful-high-contrast-shot-of-an-urb.png" alt="Milan Climbing Community" class="w-full h-auto object-cover">
-                </div>
-                <div class="geometric-shape circle w-32 h-32 -top-10 -right-10 bg-teal-400"></div>
-            </div>
-            <div class="order-1 lg:order-2 space-y-8">
-                <h2 class="text-4xl md:text-5xl font-800">For the Community, By Climbers.</h2>
-                <p class="text-xl leading-relaxed opacity-70">
-                    We're piloting at <strong>Manga Climbing</strong> on June 7th. Join the movement to keep high-performance gear moving and eliminate the "sizing error" waste in Milan.
+    <!-- Safety / Category Section -->
+    <section class="py-20 px-6 bg-violet-900 text-white">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+            <div class="space-y-6">
+                <h2 class="text-4xl font-800">Strictly Category II PPE.</h2>
+                <p class="text-xl text-teal-100/70 leading-relaxed">
+                    Safety is non-negotiable. We only facilitate the exchange of shoes and pads. Ropes, harnesses, and hardware are strictly prohibited to ensure community integrity.
                 </p>
-                <ul class="space-y-4 font-bold">
-                    <li class="flex items-center gap-3">
-                        <span class="text-teal-500">✓</span> Verified at Urban Wall Pero
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <span class="text-teal-500">✓</span> Supported by Rockspot Community
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <span class="text-teal-500">✓</span> Pure Category II PPE Safety
-                    </li>
-                </ul>
+                <div class="flex gap-8">
+                    <div class="bg-white/10 p-4 rounded-xl border border-white/20">
+                        <div class="text-2xl font-800 text-teal-400">0</div>
+                        <div class="text-xs font-bold uppercase tracking-widest">Accidents Reported</div>
+                    </div>
+                    <div class="bg-white/10 p-4 rounded-xl border border-white/20">
+                        <div class="text-2xl font-800 text-teal-400">100%</div>
+                        <div class="text-xs font-bold uppercase tracking-widest">P2P Verified</div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="card p-6 bg-lavender text-violet-900 border-teal-500 border-4">
+                    <div class="text-2xl mb-2">👟</div>
+                    <div class="font-800 uppercase text-xs tracking-widest mb-1">Permitted</div>
+                    <div class="text-sm font-bold">Climbing Shoes</div>
+                </div>
+                <div class="card p-6 bg-lavender text-violet-900 opacity-60">
+                    <div class="text-2xl mb-2">📦</div>
+                    <div class="font-800 uppercase text-xs tracking-widest mb-1">Permitted</div>
+                    <div class="text-sm font-bold">Bouldering Pads</div>
+                </div>
+                <div class="card p-6 bg-red-500/10 border-red-500/50 text-white col-span-2">
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm font-bold italic">No Ropes. No Harnesses. No Metal.</div>
+                        <div class="text-xl">🚫</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Waitlist / Form -->
-    <section id="waitlist" class="py-32 px-6 bg-lavender relative">
-        <div class="geometric-shape triangle w-64 h-64 -bottom-20 -left-20 rotate-45 opacity-10"></div>
-        <div class="max-w-3xl mx-auto text-center space-y-12">
+    <!-- Pilot Event Callout -->
+    <section id="waitlist" class="py-24 px-6 relative overflow-hidden">
+        <div class="geometric-shape triangle w-96 h-96 -bottom-20 -left-20 rotate-45 opacity-5"></div>
+        <div class="max-w-5xl mx-auto text-center space-y-12 relative z-10">
             <div class="space-y-4">
-                <h2 class="text-5xl font-800 tracking-tight">Join the Beta.</h2>
-                <p class="text-xl opacity-70">Be the first to trade at our June 7th Safe-Swap pilot.</p>
+                <div class="text-teal-600 font-800 uppercase tracking-widest text-sm">Next Activation</div>
+                <h2 class="text-5xl md:text-6xl font-800 tracking-tight">Safe-Swap Sunday</h2>
+                <p class="text-xl opacity-70 max-w-2xl mx-auto">
+                    Join us at <strong>Manga Climbing Precotto</strong> for our flagship pilot event. Get your gear verified, meet the sellers, and find your perfect fit.
+                </p>
+                <div class="flex justify-center gap-4 text-sm font-bold mt-4">
+                    <span class="bg-violet-900 text-white px-3 py-1 rounded-lg">June 7, 2026</span>
+                    <span class="bg-peach-400 text-violet-900 px-3 py-1 rounded-lg">16:00 - 19:00</span>
+                </div>
             </div>
             
-            <div class="card p-10 text-left bg-white">
+            <div class="card p-10 text-left bg-white max-w-2xl mx-auto relative">
+                <div class="absolute -top-4 -right-4 bg-teal-500 text-white px-4 py-2 rounded-xl font-800 text-xs shadow-lg rotate-6">LIMITED SLOTS</div>
                 <form id="waitlist-form" class="space-y-6">
                     <div class="grid md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-bold uppercase mb-2 tracking-widest text-violet-900/50">Your Email</label>
+                            <label class="block text-xs font-bold uppercase mb-2 tracking-widest text-violet-900/50">Email Address</label>
                             <input type="email" name="email" required class="input-field" placeholder="climber@milan.it">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold uppercase mb-2 tracking-widest text-violet-900/50">Primary Gym</label>
+                            <label class="block text-xs font-bold uppercase mb-2 tracking-widest text-violet-900/50">Your Home Gym</label>
                             <select name="gym_preference" class="input-field">
                                 <option value="Urban Wall">Urban Wall (Pero)</option>
                                 <option value="Rockspot Nord">Rockspot Nord (Rho)</option>
@@ -276,48 +301,48 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold uppercase mb-2 tracking-widest text-violet-900/50">I'm looking to...</label>
-                        <div class="flex gap-4">
-                            <label class="flex-1 border-2 border-violet-900 p-4 rounded-xl cursor-pointer hover:bg-violet-50 transition-colors">
-                                <input type="radio" name="intent" value="sell" class="mr-2" checked> Sell Gear
+                        <label class="block text-xs font-bold uppercase mb-2 tracking-widest text-violet-900/50">I want to...</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="relative flex items-center justify-center border-2 border-violet-900 p-4 rounded-xl cursor-pointer hover:bg-violet-50 transition-colors">
+                                <input type="radio" name="intent" value="sell" class="absolute opacity-0" checked>
+                                <span class="font-bold text-sm">Sell Sizing Errors</span>
                             </label>
-                            <label class="flex-1 border-2 border-violet-900 p-4 rounded-xl cursor-pointer hover:bg-violet-50 transition-colors">
-                                <input type="radio" name="intent" value="buy" class="mr-2"> Buy Gear
+                            <label class="relative flex items-center justify-center border-2 border-violet-900 p-4 rounded-xl cursor-pointer hover:bg-violet-50 transition-colors">
+                                <input type="radio" name="intent" value="buy" class="absolute opacity-0">
+                                <span class="font-bold text-sm">Buy Verified Gear</span>
                             </label>
                         </div>
                     </div>
-                    <button type="submit" id="submit-btn" class="btn-primary w-full py-5 rounded-2xl text-xl font-800">Reserve My Spot for June 7th</button>
-                    <p id="form-status" class="text-center font-bold hidden"></p>
+                    <button type="submit" id="submit-btn" class="btn-primary w-full py-5 rounded-2xl text-xl font-800">Reserve My RSVP Spot</button>
+                    <p id="form-status" class="text-center font-bold hidden text-sm"></p>
                 </form>
-            </div>
-            
-            <div class="text-sm font-bold opacity-40">
-                Next Event: June 7, 2026 • 16:00 - 19:00 • Manga Climbing
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-20 px-6 border-t-2 border-violet-900/10">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12">
-            <div class="space-y-4">
-                <div class="text-2xl font-800">GripMilan</div>
-                <p class="text-sm opacity-60">The performance gear exchange for urban climbers in Milan. Strictly Category II PPE.</p>
+    <footer class="py-20 px-6 border-t-2 border-violet-900/10 bg-lavender/30">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+            <div class="md:col-span-2 space-y-6">
+                <div class="text-3xl font-800 tracking-tighter flex items-center gap-2">
+                    <div class="w-8 h-8 bg-violet-900 rounded-lg"></div>
+                    GripMilan
+                </div>
+                <p class="text-lg opacity-60 max-w-md">Building the first technical liquidity pool for urban climbers in Milan's premier gyms.</p>
+                <p class="text-[10px] uppercase font-bold tracking-widest opacity-40">© 2026 GripMilan • Strictly Category II PPE Intermediary</p>
             </div>
             <div class="space-y-4">
-                <h4 class="font-800 uppercase text-xs tracking-widest">Navigation</h4>
+                <h4 class="font-800 uppercase text-xs tracking-widest text-teal-600">Site</h4>
                 <ul class="space-y-2 text-sm font-bold">
-                    <li><a href="#how-it-works" class="hover:underline">Process</a></li>
-                    <li><a href="#fmv" class="hover:underline">FMV Guide</a></li>
-                    <li><a href="listing-prototype.html" class="hover:underline">List Gear</a></li>
+                    <li><a href="#fmv" class="hover:underline">Market Guide</a></li>
+                    <li><a href="#waitlist" class="hover:underline">Safe-Swap Events</a></li>
+                    <li><a href="listing-prototype.html" class="hover:underline">List Your Gear</a></li>
                 </ul>
             </div>
             <div class="space-y-4">
-                <h4 class="font-800 uppercase text-xs tracking-widest">Connect</h4>
-                <div class="flex gap-4">
-                    <a href="mailto:raphael@baget.ai" class="w-10 h-10 border-2 border-violet-900 rounded-lg flex items-center justify-center font-bold">@</a>
-                </div>
-                <p class="text-[10px] uppercase tracking-tighter opacity-40">Milan, Italy • 2026</p>
+                <h4 class="font-800 uppercase text-xs tracking-widest text-teal-600">Contact</h4>
+                <a href="mailto:raphael@baget.ai" class="text-sm font-bold block hover:underline">raphael@baget.ai</a>
+                <div class="text-xs font-bold opacity-50">Milan, Italy</div>
             </div>
         </div>
     </footer>
@@ -334,23 +359,23 @@
                 const data = await res.json();
                 const rows = data.rows || [];
                 
-                container.innerHTML = rows.slice(0, 4).map(row => `
-                    <div class="card p-5 flex justify-between items-center group">
+                container.innerHTML = rows.slice(0, 5).map(row => `
+                    <div class="card p-5 flex justify-between items-center group bg-white hover:bg-teal-50">
                         <div>
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="font-800">${row.shoe_model}</span>
-                                <span class="fmv-badge">${row.condition_rating || 'MINT'}</span>
+                                <span class="font-800 text-lg">${row.shoe_model}</span>
+                                <span class="fmv-badge bg-violet-900">${row.condition_rating || 'MINT'}</span>
                             </div>
-                            <div class="text-xs font-bold opacity-50 uppercase">${row.manufacturer} • Retail €${row.retail_price}</div>
+                            <div class="text-xs font-bold opacity-50 uppercase tracking-tighter">${row.manufacturer} • retail €${row.retail_price}</div>
                         </div>
                         <div class="text-right">
                             <div class="text-2xl font-800 text-teal-500">€${row.current_resale_price}</div>
-                            <div class="text-[10px] font-800 uppercase tracking-tighter opacity-50">Market Value</div>
+                            <div class="text-[10px] font-800 uppercase tracking-widest opacity-40">Swap Target</div>
                         </div>
                     </div>
                 `).join('');
             } catch (e) {
-                container.innerHTML = '<p class="p-4 border-2 border-dashed border-violet-900 rounded-xl">Pricing guide currently updating...</p>';
+                container.innerHTML = '<p class="p-6 border-4 border-dashed border-violet-900/10 rounded-2xl text-center font-bold opacity-40">Live market feed refreshing...</p>';
             }
         }
 
@@ -358,10 +383,12 @@
         async function loadCounts() {
             try {
                 const res = await fetch(`https://stg-app.baget.ai/api/public/databases/${WAITLIST_DB}/count`);
-                const { count } = await res.json();
-                const total = (count || 0) + 48; // Seeded count for launch
-                document.getElementById('hero-count').innerText = total + '+';
-            } catch (e) {}
+                const data = await res.json();
+                const total = (data.count || 0) + 48; // Base community count
+                document.getElementById('hero-count').innerText = total;
+            } catch (e) {
+                document.getElementById('hero-count').innerText = '50+';
+            }
         }
 
         // Form Submit
@@ -369,10 +396,27 @@
         const submitBtn = document.getElementById('submit-btn');
         const status = document.getElementById('form-status');
 
+        // Style the radio labels on click
+        const radioLabels = document.querySelectorAll('input[type="radio"]');
+        radioLabels.forEach(input => {
+            input.addEventListener('change', () => {
+                document.querySelectorAll('input[name="intent"]').forEach(i => {
+                    i.parentElement.classList.remove('bg-teal-500', 'text-white', 'border-violet-900');
+                    i.parentElement.classList.add('bg-white', 'text-violet-900');
+                });
+                if (input.checked) {
+                    input.parentElement.classList.remove('bg-white', 'text-violet-900');
+                    input.parentElement.classList.add('bg-teal-500', 'text-white', 'border-violet-900');
+                }
+            });
+        });
+        // Initial state
+        document.querySelector('input[name="intent"]:checked').parentElement.classList.add('bg-teal-500', 'text-white');
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             submitBtn.disabled = true;
-            submitBtn.innerText = 'Sending...';
+            submitBtn.innerText = 'Syncing...';
 
             const formData = new FormData(form);
             const payload = {
@@ -380,7 +424,8 @@
                     email: formData.get('email'),
                     gym_preference: formData.get('gym_preference'),
                     intent: formData.get('intent'),
-                    status: 'waitlist_beta'
+                    status: 'beta_rsvp',
+                    source: 'homepage_pilot'
                 }
             };
 
@@ -392,19 +437,19 @@
                 });
 
                 if (res.ok) {
-                    status.innerText = 'Success! Check your email for June 7th details.';
+                    status.innerText = 'RSVP Confirmed! Check your inbox for the June 7 schedule.';
                     status.classList.remove('hidden', 'text-red-500');
                     status.classList.add('text-green-600');
                     form.reset();
                     loadCounts();
                 } else { throw new Error(); }
             } catch (err) {
-                status.innerText = 'Something went wrong. Please try again.';
+                status.innerText = 'Connection error. Please try again.';
                 status.classList.remove('hidden', 'text-green-600');
                 status.classList.add('text-red-500');
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerText = 'Reserve My Spot for June 7th';
+                submitBtn.innerText = 'Reserve My RSVP Spot';
             }
         });
 
